@@ -1,8 +1,4 @@
-# AULA 02
-
-❕Erratas:
-- Durante a aula, cometi um pequeno equívoco na explicação do que é o EsLint.
-  - O EsLint, é um linter, uma ferramenta de análise de código estática que analisa o código sem executá-lo, indicando padrões que podem ser prejudiciais para o projeto
+# AULA 03
 
 - Estamos utilizando o NodeJS v20.11.1. Para melhor acompanhamento das aulas, é recomendado instalar a mesma versão em [nodejs.org](https://nodejs.org/en/)
 
@@ -10,47 +6,61 @@
 
 ### Configuração e instalação de bibliotecas
 
-- npm init -y
-  - Inicialização do projeto NodeJS
-
-- npm install -D typescript
-  - Instalação do typescript, a linguagem de programação que estaremos utilizando durante o curso
-
-- npm install -D @types/node
-  - Adiciona algumas tipagens
-
-- npx tsc --init
-  - Inicializa as configurações de compilação do typescript
-
-- npm install -D ts-node-dev
-  - Biblioteca para execução do código typescript
-
-- npm install husky
-  - Instalação do husky, uma biblioteca para execução de scripts com o git
-
-- npx husky init
-  - Configuração padrão do husky
-
-- npm i -D eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-standard
-  - Instalação do EsLint
+- npm install -D jest ts-jest @types/jest
+  - Instalação do Jest e Dependências
 
 ### Execução de scripts do NodeJS
 
-- npm start
-  - Executa o código em ambiente de desenvolvimento
+- npm run test:unit
+  - Executa os testes
 
-- npm run start:prod
-  - Compila e executa o código compilado em JavaScript
+### Explicação de algumas funções e recursos da linguagem utilizados na aula
+#### O que significa "...task"?
+```typescript
+  updateTask (index: number, task: UpdateTask) {
+    this.tasks[index] = {
+      ...this.tasks[index],
+      ...task
+    }
+  }
+```
+Bom, nesse trecho de código, estamos atribuindo ao vetor (array), "tasks" na posição "index", os valores antigos dele "...this.tasks[index]" e os valores novos "...task".
+O operador "..." é chamado de "spread", e ele pega todo o conteúdo inserido dentro de "tasks" e armazena no objeto, propriedade por propriedade.
 
-- npm run build
-  - Compila o código para JavaScript
+### Operações com arrays e objetos
+#### PUSH
+```typescript
+this.tasks.push(task)
+```
+O método push em JavaScript é usado para adicionar um ou mais elementos ao final de um array existente.
+
+#### SPLICE
+```typescript
+  removeTask (index: number) {
+    this.tasks.splice(index, 1)
+  }
+```
+O método splice em JavaScript é uma ferramenta poderosa para manipular arrays, permitindo remover, substituir ou inserir elementos em qualquer posição.
+
+#### Filter
+```typescript
+  const missingProperties = ['title', 'description', 'targetDate'].filter(
+    (prop) => !Object.keys(task).includes(prop)
+  )
+```
+O método filter em JavaScript é uma ferramenta poderosa para filtrar elementos de um array com base em uma condição específica. Ele permite criar um novo array contendo apenas os elementos que atendem aos seus critérios, facilitando a manipulação e organização de dados.
+
+#### Object.keys.includes
+```typescript
+  const missingProperties = ['title', 'description', 'targetDate'].filter(
+    (prop) => !Object.keys(task).includes(prop)
+  )
+```
+O método Object.keys é um método estático que retorna um array contendo os nomes das propriedades enumeráveis com chaves do tipo string de um determinado objeto.
+No nosso caso, ele retorna um array com os nomes das propriedades do objeto "task"
+Logo em seguida, aplicamos o método includes, em cima do array de propriedades do objeto "task", verificando se as propriedades que queremos estão presentes. Caso uma propriedade não esteja presente, ela é adicionada no array missingProperties.
+
 
 ## Links Úteis:
 
-- [EsLint](https://eslint.org/)
-
-- [Husky](https://typicode.github.io/husky/)
-
-- [Npm](https://www.npmjs.com/)
-
-- [NodeJs](https://nodejs.org/en/)
+- [Jest](https://jestjs.io/)
