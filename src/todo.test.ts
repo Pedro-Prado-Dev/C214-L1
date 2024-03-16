@@ -28,4 +28,39 @@ describe('ToDoList', ()=> {
             expect(tasks).toEqual([])
         })
     })
+    describe('Testing updateTask', () => {
+        test('should update an existing task in the list', () => {
+            const todoInstance = new ToDoList()
+            const updatedTask = {
+                title: 'updated_title',
+                description: 'updated_description',
+                targetDate: '02/02/2025',
+                type: 'updated_type',
+                priority: '2',
+                subTasks: []
+            }
+            todoInstance.add(anyTask)
+            todoInstance.updateTask(0, updatedTask)
+            const tasks = todoInstance.getTasks()
+            expect(tasks).toEqual([updatedTask])
+        })
+    })
+
+    describe('Testing removeTask', () => {
+        test('should remove an existing task from the list', () => {
+            const todoInstance = new ToDoList()
+            todoInstance.add(anyTask)
+            todoInstance.removeTask(0)
+            const tasks = todoInstance.getTasks()
+            expect(tasks).toEqual([])
+        })
+
+        test('should not remove a task with an invalid index', () => {
+            const todoInstance = new ToDoList()
+            todoInstance.add(anyTask)
+            todoInstance.removeTask(1) // Trying to remove a task with an index that doesn't exist
+            const tasks = todoInstance.getTasks()
+            expect(tasks).toEqual([anyTask])
+        })
+    })
 })
