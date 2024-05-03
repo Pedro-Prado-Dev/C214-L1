@@ -1,4 +1,7 @@
+import { ToDoListAdapter } from "./adapters/ToDoListAdapter"
+
 export type Task = {
+    id?: number,
     title: string,
     description: string,
     targetDate: string,
@@ -8,6 +11,7 @@ export type Task = {
 }
 
 export type UpdateTask = {
+    id: number
     title?: string,
     description?: string,
     targetDate?: string,
@@ -17,8 +21,6 @@ export type UpdateTask = {
   }
 
 export class ToDoList {
-    private tasks: Task[] = []
-
     add(task: Task) {
         const missingProperties = ['title', 'description', 'targetDate'].filter(
             (prop) => !Object.keys(task).includes(prop)
@@ -27,24 +29,22 @@ export class ToDoList {
             if (missingProperties.length > 0) {
                 return 'Missing properties in task object'
             }
-            this.tasks.push(task)
+            const adapter = new ToDoListAdapter()
+            adapter.create(task)
         } catch (error) {
             return error
         }
     }
 
     getTasks() {
-        return this.tasks
+        return new ToDoListAdapter().getAll()
     }
 
-    updateTask(index: number, task: UpdateTask) {
-        this.tasks[index] = {
-            ...this.tasks[index],
-            ...task
-        }
+    updateTask(task: UpdateTask) {
+        new ToDoListAdapter().update(task)
     }
-
+    
     removeTask(index: number) {
-        this.tasks.splice(index, 1)
+        new ToDoListAdapter().delete(index)
     }
 }
