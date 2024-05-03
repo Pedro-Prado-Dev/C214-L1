@@ -1,6 +1,7 @@
-import { Task, UpdateTask } from "../TodoList";
+import { Task, UpdateTask } from "../models/Task"
+import { TodoListRepository } from "../repository/TodoListRepository"
 
-export class ToDoListAdapter {
+export class ToDoListAdapter implements TodoListRepository{
     tasks: Task [] =[]
 
     create (task: Task){
@@ -32,35 +33,42 @@ export class ToDoListAdapter {
         }
     }
 
-    update (task: UpdateTask){
-        try{
-            const toUpdateTask = this.tasks.map(item => item.id === task.id ? {...item, ...task} : item)
-            this.tasks = toUpdateTask
-            return{
-                success: true,
-                error: null
+    update(task: UpdateTask) {
+        try {
+            const index = this.tasks.findIndex(item => item.id === task.id);
+            if (index !== -1) {
+                this.tasks[index] = { ...this.tasks[index], ...task };
+                return {
+                    success: true,
+                    error: null
+                };
+            } else {
+                return {
+                    success: null,
+                    error: 'Task not found'
+                };
             }
-        } catch (error){
-            return{
-                success:null,
-                error: 'Connot update task'
-            }
+        } catch (error) {
+            return {
+                success: null,
+                error: 'Cannot update task'
+            };
         }
     }
 
-    delete (id: number){
-        try{
-            const toDeleteTask = this.tasks.filter(item => item.id !== id)
-            this.tasks = toDeleteTask
-            return{
+    delete(id: number) {
+        const index = this.tasks.findIndex(item => item.id === id);
+        if (index !== -1) {
+            this.tasks.splice(index, 1);
+            return {
                 success: true,
                 error: null
-            }
-        } catch (error){
-            return{
+            };
+        } else {
+            return {
                 success: null,
-                error: true
-            }
+                error: 'Task not found'
+            };
         }
     }
 }
